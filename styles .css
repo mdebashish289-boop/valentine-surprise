@@ -1,0 +1,53 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, pink, #ffb6c1);
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    position: relative;
+}
+
+.hidden {
+    display: none;
+}
+
+#yes-btn {
+    font-size: 30px;
+    padding: 20px 45px;
+    background: #ff2e63;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    margin: 15px;
+}
+
+#no-btn {
+    position: absolute;
+    font-size: 14px;
+    padding: 6px 12px;
+    background: gray;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    animation: fall 3s linear infinite;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+    }
+}

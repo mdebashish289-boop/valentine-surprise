@@ -3,33 +3,42 @@ const yesBtn = document.getElementById("yes-btn");
 const main = document.getElementById("main");
 const success = document.getElementById("success");
 
-function moveButton() {
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 100);
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+let isMoving = false;
+
+// Detect finger or cursor getting close
+document.addEventListener("mousemove", evade);
+document.addEventListener("touchmove", (e) => evade(e.touches[0]));
+
+function evade(e) {
+  if (isMoving) return;
+
+  const btnRect = noBtn.getBoundingClientRect();
+  const dx = e.clientX - (btnRect.left + btnRect.width / 2);
+  const dy = e.clientY - (btnRect.top + btnRect.height / 2);
+  const distance = Math.sqrt(dx * dx + dy * dy);
+
+  if (distance < 120) {
+    isMoving = true;
+
+    const moveX = (Math.random() - 0.5) * 220;
+    const moveY = (Math.random() - 0.5) * 120;
+
+    noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+
+    setTimeout(() => {
+      isMoving = false;
+    }, 300);
+  }
 }
 
-noBtn.addEventListener("touchstart", moveButton);
-noBtn.addEventListener("mouseover", moveButton);
-
-yesBtn.addEventListener("click", () => {
-    main.classList.add("hidden");
-    success.classList.remove("hidden");
-    launchConfetti();
+// Absolute block on NO click 😈
+noBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
 });
 
-function launchConfetti() {
-    for (let i = 0; i < 80; i++) {
-        const confetti = document.createElement("div");
-        confetti.classList.add("confetti");
-        confetti.style.left = Math.random() * window.innerWidth + "px";
-        confetti.style.background =
-            `hsl(${Math.random() * 360}, 100%, 50%)`;
-        confetti.style.animationDuration =
-            Math.random() * 2 + 2 + "s";
-        document.body.appendChild(confetti);
-
-        setTimeout(() => confetti.remove(), 3000);
-    }
-}
+// YES logic
+yesBtn.addEventListener("click", () => {
+  main.classList.add("hidden");
+  success.classList.remove("hidden");
+});
